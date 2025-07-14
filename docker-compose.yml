@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-sampleapp}
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-sampleapp}
+      - DB_HOST=db
+      - PORT=4000
+      - MASTER_ADMIN_PASSWORD=${MASTER_ADMIN_PASSWORD:-SetYourStrongAdminPasswordHere}
+    depends_on:
+      - db
+    ports:
+      - '4000:4000'
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_API_URL=http://backend:4000
+    depends_on:
+      - backend
+    ports:
+      - '80:80'
+
+volumes:
+  pgdata:

@@ -1,0 +1,34 @@
+{
+  "name": "sampleapp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:db": "docker-compose -f docker-compose.dev.yml up",
+    "dev:server": "npx nodemon src/index.ts",
+    "dev:client": "npm start --prefix client",
+    "dev": "npx concurrently \"npm:dev:db\" \"npm:dev:server\" \"npm:dev:client\"",
+    "prod": "docker-compose up --build",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.19",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^5.0.3",
+    "bcrypt": "^6.0.0",
+    "concurrently": "^7.6.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.15.4",
+    "all": "^0.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "faker": "^5.5.3",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3"
+  }
+}
